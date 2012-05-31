@@ -10,58 +10,58 @@
 
 *******************************************************************************/
 
-PanoJS.CONTROL_IMAGE_ZOOMIN   = "images/32px_plus.png";
-PanoJS.CONTROL_IMAGE_ZOOM11   = "images/32px_11.png";
-PanoJS.CONTROL_IMAGE_ZOOMOUT  = "images/32px_minus.png";
-PanoJS.CONTROL_IMAGE_MAXIMIZE = "images/32px_show.png";
+PanoJSLG.CONTROL_IMAGE_ZOOMIN   = "images/32px_plus.png";
+PanoJSLG.CONTROL_IMAGE_ZOOM11   = "images/32px_11.png";
+PanoJSLG.CONTROL_IMAGE_ZOOMOUT  = "images/32px_minus.png";
+PanoJSLG.CONTROL_IMAGE_MAXIMIZE = "images/32px_show.png";
 
-PanoJS.CONTROL_IMAGE_ZOOMIN_TOUCH   = "images/64px_plus.png";
-PanoJS.CONTROL_IMAGE_ZOOM11_TOUCH   = "images/64px_11.png";
-PanoJS.CONTROL_IMAGE_ZOOMOUT_TOUCH  = "images/64px_minus.png";
-PanoJS.CONTROL_IMAGE_MAXIMIZE_TOUCH = "images/64px_show.png";
+PanoJSLG.CONTROL_IMAGE_ZOOMIN_TOUCH   = "images/64px_plus.png";
+PanoJSLG.CONTROL_IMAGE_ZOOM11_TOUCH   = "images/64px_11.png";
+PanoJSLG.CONTROL_IMAGE_ZOOMOUT_TOUCH  = "images/64px_minus.png";
+PanoJSLG.CONTROL_IMAGE_MAXIMIZE_TOUCH = "images/64px_show.png";
 
-PanoJS.CONTROL_STYLE = "position: absolute; z-index: 30; "; //opacity:0.5; filter:alpha(opacity=50); ";
+PanoJSLG.CONTROL_STYLE = "position: absolute; z-index: 30; "; //opacity:0.5; filter:alpha(opacity=50); ";
 
-PanoJS.CONTROL_ZOOMIN = {
+PanoJSLG.CONTROL_ZOOMIN = {
     className : "zoomIn",
-    image : (isClientTouch() ? PanoJS.CONTROL_IMAGE_ZOOMIN_TOUCH : PanoJS.CONTROL_IMAGE_ZOOMIN),
+    image : (isClientTouch() ? PanoJSLG.CONTROL_IMAGE_ZOOMIN_TOUCH : PanoJSLG.CONTROL_IMAGE_ZOOMIN),
     title : "Zoom in",
-    style : PanoJS.CONTROL_STYLE + " top: 10px; left: 10px; width: 20px;",
+    style : PanoJSLG.CONTROL_STYLE + " top: 10px; left: 10px; width: 20px;",
 };
 
-PanoJS.CONTROL_ZOOM11 = {
+PanoJSLG.CONTROL_ZOOM11 = {
     className : "zoom11",
-    image : (isClientTouch() ? PanoJS.CONTROL_IMAGE_ZOOM11_TOUCH : PanoJS.CONTROL_IMAGE_ZOOM11),
+    image : (isClientTouch() ? PanoJSLG.CONTROL_IMAGE_ZOOM11_TOUCH : PanoJSLG.CONTROL_IMAGE_ZOOM11),
     title : "Zoom 1:1",
-    style : PanoJS.CONTROL_STYLE + " top: 40px; left: 10px; width: 20px;",
+    style : PanoJSLG.CONTROL_STYLE + " top: 40px; left: 10px; width: 20px;",
 };
 
-PanoJS.CONTROL_ZOOMOUT = {
+PanoJSLG.CONTROL_ZOOMOUT = {
     className : "zoomOut",
-    image : (isClientTouch() ? PanoJS.CONTROL_IMAGE_ZOOMOUT_TOUCH : PanoJS.CONTROL_IMAGE_ZOOMOUT),
+    image : (isClientTouch() ? PanoJSLG.CONTROL_IMAGE_ZOOMOUT_TOUCH : PanoJSLG.CONTROL_IMAGE_ZOOMOUT),
     title : "Zoom out",
-    style : PanoJS.CONTROL_STYLE + " top: 70px; left: 10px; width: 20px;",
+    style : PanoJSLG.CONTROL_STYLE + " top: 70px; left: 10px; width: 20px;",
 };
 
-PanoJS.CONTROL_MAXIMIZE = {
+PanoJSLG.CONTROL_MAXIMIZE = {
     className : "maximize",
-    image : (isClientTouch() ? PanoJS.CONTROL_IMAGE_MAXIMIZE_TOUCH : PanoJS.CONTROL_IMAGE_MAXIMIZE),
+    image : (isClientTouch() ? PanoJSLG.CONTROL_IMAGE_MAXIMIZE_TOUCH : PanoJSLG.CONTROL_IMAGE_MAXIMIZE),
     title : "Maximize",
-    style : PanoJS.CONTROL_STYLE + " top: 10px; right: 10px; width: 20px;",
+    style : PanoJSLG.CONTROL_STYLE + " top: 10px; right: 10px; width: 20px;",
 };
 
 if (isClientTouch()) {
-  PanoJS.CONTROL_ZOOMIN.style   = PanoJS.CONTROL_STYLE + " top: 15px;  left: 15px;  width: 36px;";
-  PanoJS.CONTROL_ZOOM11.style   = PanoJS.CONTROL_STYLE + " top: 75px;  left: 15px;  width: 36px;";
-  PanoJS.CONTROL_ZOOMOUT.style  = PanoJS.CONTROL_STYLE + " top: 135px; left: 15px;  width: 36px;";
-  PanoJS.CONTROL_MAXIMIZE.style = PanoJS.CONTROL_STYLE + " top: 15px;  right: 15px; width: 36px;";
+  PanoJSLG.CONTROL_ZOOMIN.style   = PanoJSLG.CONTROL_STYLE + " top: 15px;  left: 15px;  width: 36px;";
+  PanoJSLG.CONTROL_ZOOM11.style   = PanoJSLG.CONTROL_STYLE + " top: 75px;  left: 15px;  width: 36px;";
+  PanoJSLG.CONTROL_ZOOMOUT.style  = PanoJSLG.CONTROL_STYLE + " top: 135px; left: 15px;  width: 36px;";
+  PanoJSLG.CONTROL_MAXIMIZE.style = PanoJSLG.CONTROL_STYLE + " top: 15px;  right: 15px; width: 36px;";
 }
 
 if (isClientPhone()) {
-  PanoJS.CONTROL_ZOOMIN.style   = PanoJS.CONTROL_STYLE + " top: 30px;  left: 30px;  width: 96px;";
-  PanoJS.CONTROL_ZOOM11.style   = PanoJS.CONTROL_STYLE + " top: 180px; left: 30px;  width: 96px;";
-  PanoJS.CONTROL_ZOOMOUT.style  = PanoJS.CONTROL_STYLE + " top: 320px; left: 30px;  width: 96px;";
-  PanoJS.CONTROL_MAXIMIZE.style = PanoJS.CONTROL_STYLE + " top: 30px;  right: 30px; width: 96px;";
+  PanoJSLG.CONTROL_ZOOMIN.style   = PanoJSLG.CONTROL_STYLE + " top: 30px;  left: 30px;  width: 96px;";
+  PanoJSLG.CONTROL_ZOOM11.style   = PanoJSLG.CONTROL_STYLE + " top: 180px; left: 30px;  width: 96px;";
+  PanoJSLG.CONTROL_ZOOMOUT.style  = PanoJSLG.CONTROL_STYLE + " top: 320px; left: 30px;  width: 96px;";
+  PanoJSLG.CONTROL_MAXIMIZE.style = PanoJSLG.CONTROL_STYLE + " top: 30px;  right: 30px; width: 96px;";
 }
 
 
@@ -73,21 +73,21 @@ function PanoControls(viewer) {
 }
 
 PanoControls.prototype.initControls = function() {
-  if (PanoJS.CONTROL_UPDATED_URLS) return;
-  PanoJS.CONTROL_ZOOMIN.image   = PanoJS.STATIC_BASE_URL+PanoJS.CONTROL_ZOOMIN.image;
-  PanoJS.CONTROL_ZOOM11.image   = PanoJS.STATIC_BASE_URL+PanoJS.CONTROL_ZOOM11.image;
-  PanoJS.CONTROL_ZOOMOUT.image  = PanoJS.STATIC_BASE_URL+PanoJS.CONTROL_ZOOMOUT.image;
-  PanoJS.CONTROL_MAXIMIZE.image = PanoJS.STATIC_BASE_URL+PanoJS.CONTROL_MAXIMIZE.image;
-  PanoJS.CONTROL_UPDATED_URLS   = true;
+  if (PanoJSLG.CONTROL_UPDATED_URLS) return;
+  PanoJSLG.CONTROL_ZOOMIN.image   = PanoJSLG.STATIC_BASE_URL+PanoJSLG.CONTROL_ZOOMIN.image;
+  PanoJSLG.CONTROL_ZOOM11.image   = PanoJSLG.STATIC_BASE_URL+PanoJSLG.CONTROL_ZOOM11.image;
+  PanoJSLG.CONTROL_ZOOMOUT.image  = PanoJSLG.STATIC_BASE_URL+PanoJSLG.CONTROL_ZOOMOUT.image;
+  PanoJSLG.CONTROL_MAXIMIZE.image = PanoJSLG.STATIC_BASE_URL+PanoJSLG.CONTROL_MAXIMIZE.image;
+  PanoJSLG.CONTROL_UPDATED_URLS   = true;
 }
 
 PanoControls.prototype.createDOMElements = function() {
     this.dom_element = this.viewer.viewerDomElement();
       
-    this.createButton (PanoJS.CONTROL_ZOOMIN);
-    this.createButton (PanoJS.CONTROL_ZOOM11);
-    this.createButton (PanoJS.CONTROL_ZOOMOUT);
-    this.createButton (PanoJS.CONTROL_MAXIMIZE);  
+    this.createButton (PanoJSLG.CONTROL_ZOOMIN);
+    this.createButton (PanoJSLG.CONTROL_ZOOM11);
+    this.createButton (PanoJSLG.CONTROL_ZOOMOUT);
+    this.createButton (PanoJSLG.CONTROL_MAXIMIZE);  
 }
 
 PanoControls.prototype.createButton = function(control) {

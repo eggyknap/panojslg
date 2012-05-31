@@ -120,6 +120,10 @@ function PanoJSLG(viewer, options) {
   this.slideAcceleration = 0;
 }
 
+// X and Y offsets of this display from the origin        
+PanoJSLG.X_OFFSET = 0;
+PanoJSLG.X_OFFSET = 0;
+
 // project specific variables
 PanoJSLG.PROJECT_NAME = 'PanoJSLG';
 PanoJSLG.PROJECT_VERSION = '2.0.0';
@@ -156,13 +160,15 @@ PanoJSLG.CREATE_OSD_CONTROLS = true;
 PanoJSLG.CREATE_THUMBNAIL_CONTROLS = (isClientPhone() ? false : true);
 
 PanoJSLG.MAX_OVER_ZOOM = 2;
-PanoJSLG.PRE_CACHE_AMOUNT = 3; // 1 - only visible, 2 - more, 3 - even more
+PanoJSLG.PRE_CACHE_AMOUNT = 1; // 1 - only visible, 2 - more, 3 - even more
 
 // dima
 // The dafault is to pan with wheel events on a mac and zoom on other systems
 PanoJSLG.USE_WHEEL_FOR_ZOOM = (navigator.userAgent.indexOf("Mac OS X")>0 ? false: true);
 // the deltas on Firefox and Chrome are 40 times smaller than on Safari or IE
 PanoJSLG.WHEEL_SCALE = (navigator.userAgent.toLowerCase().indexOf('chrome')>-1 ? 1 : 40);
+
+PanoJSLG.USE_MOUSE = true;
 
 // dima: keys used by keyboard handlers
 // right now event is attached to 'document', can't make sure which element is current, skip for now
@@ -262,33 +268,37 @@ PanoJSLG.prototype.init = function() {
     this.prepareTiles();
     this.initialized = true;
 
-    // dima: Setup UI events
-    this.ui_listener = this.surface;
-    if (isIE()) this.ui_listener = this.viewer; // issues with IE, hack it
+    if (PanoJSLG.USE_MOUSE) {
+        // dima: Setup UI events
+        this.ui_listener = this.surface;
+        if (isIE()) this.ui_listener = this.viewer; // issues with IE, hack it
     
-    this.ui_listener.onmousedown   = callback(this, this.mousePressedHandler);
-    this.ui_listener.onmouseup     = callback(this, this.mouseReleasedHandler);
-    this.ui_listener.onmouseout    = callback(this, this.mouseReleasedHandler);
-    this.ui_listener.oncontextmenu = function() {return false;}; 
-    this.ui_listener.ondblclick    = callback(this, this.doubleClickHandler);
-    if (PanoJSLG.USE_KEYBOARD)
-      document.onkeydown  = callback(this, this.keyboardHandler);
+        this.ui_listener.onmousedown   = callback(this, this.mousePressedHandler);
+        this.ui_listener.onmouseup     = callback(this, this.mouseReleasedHandler);
+        this.ui_listener.onmouseout    = callback(this, this.mouseReleasedHandler);
+        this.ui_listener.oncontextmenu = function() {return false;}; 
+        this.ui_listener.ondblclick    = callback(this, this.doubleClickHandler);
 
-    this.ui_listener.onmousewheel = callback(this, this.mouseWheelHandler);
-    // dima: Firefox standard
-    if (!('onmousewheel' in document.documentElement))
-      this.surface.addEventListener ("DOMMouseScroll", callback(this, this.mouseScrollHandler), false);
+        this.ui_listener.onmousewheel = callback(this, this.mouseWheelHandler);
+        // dima: Firefox standard
+        if (!('onmousewheel' in document.documentElement))
+        this.surface.addEventListener ("DOMMouseScroll", callback(this, this.mouseScrollHandler), false);
         
-    // dima: support for HTML5 touch interfaces like iphone and android
-    this.ui_listener.ontouchstart    = callback(this, this.touchStartHandler);
-    this.ui_listener.ontouchmove     = callback(this, this.touchMoveHandler);
-    this.ui_listener.ongesturestart  = callback(this, this.gestureStartHandler);
-    this.ui_listener.ongesturechange = callback(this, this.gestureChangeHandler);
-    this.ui_listener.ongestureend    = callback(this, this.gestureEndHandler);        
-        
+        // dima: support for HTML5 touch interfaces like iphone and android
+        this.ui_listener.ontouchstart    = callback(this, this.touchStartHandler);
+        this.ui_listener.ontouchmove     = callback(this, this.touchMoveHandler);
+        this.ui_listener.ongesturestart  = callback(this, this.gestureStartHandler);
+        this.ui_listener.ongesturechange = callback(this, this.gestureChangeHandler);
+        this.ui_listener.ongestureend    = callback(this, this.gestureEndHandler);        
+            
+    }
+
     // notify listners
     this.notifyViewerZoomed();    
     this.notifyViewerMoved();  
+
+    if (PanoJSLG.USE_KEYBOARD)
+      document.onkeydown  = callback(this, this.keyboardHandler);
 };
 
 PanoJSLG.prototype.viewerDomElement = function() {    
@@ -360,8 +370,9 @@ PanoJSLG.prototype.positionTiles = function(motion, reset) {
       for (var r = 0; r < this.tiles[c].length; r++) {
         var tile = this.tiles[c][r];
                 
-        tile.posx = (tile.xIndex * this.tileSize) + this.x + motion.x + PanoJSLGLG.X_OFFSET;
-        tile.posy = (tile.yIndex * this.tileSize) + this.y + motion.y + PanoJSLGLG.X_OFFSET;
+        // XXX Define these somewhere, and document, and test, and ...
+        tile.posx = (tile.xIndex * this.tileSize) + this.x + motion.x + PanoJSLG.X_OFFSET;
+        tile.posy = (tile.yIndex * this.tileSize) + this.y + motion.y + PanoJSLG.X_OFFSET;
                 
         var visible = true;
                 
@@ -370,7 +381,7 @@ PanoJSLG.prototype.positionTiles = function(motion, reset) {
           // consider the tile coming into view from the left
           do {
             tile.xIndex -= this.tiles.length;
-            tile.posx = (tile.xIndex * this.tileSize) + this.x + motion.x;
+            tile.posx = ((tile.xIndex * this.tileSize) + this.x + motion.x) % this.width;
           } while (tile.posx > this.width +this.tileSize  );
                     
           if (tile.posx + this.tileSize < 0) {
@@ -382,7 +393,7 @@ PanoJSLG.prototype.positionTiles = function(motion, reset) {
           // if so, consider the tile coming into view from the right
           while (tile.posx < -this.tileSize  *2) {
             tile.xIndex += this.tiles.length;
-            tile.posx = (tile.xIndex * this.tileSize) + this.x + motion.x;
+            tile.posx = ((tile.xIndex * this.tileSize) + this.x + motion.x) % this.width;
           }
                     
           if (tile.posx > this.width  +this.tileSize) {
@@ -449,7 +460,7 @@ PanoJSLG.prototype.removeTileFromWell = function(tile) {
  * routine, delaying the appearance of the tile until it is fully
  * loaded, if configured to do so.
  */
-PanoJSLG.prototype.assignTileImage = function(tile) {    
+PanoJSLG.prototype.assignTileImage = function(tile) {
     var tileImgId, src;
     var useBlankImage = false;
         
@@ -552,7 +563,7 @@ PanoJSLG.prototype.assignTileImage = function(tile) {
       }
 
       // dima, fetch image after onload method is set-up
-      if (!tileImg.done) {// && tileImg.delayed_loading) {
+      if (!tileImg.done) {// && tileImg.delayed_loading) 
         tileImg.src = tileImg.relativeSrc;
       }
             
@@ -569,6 +580,7 @@ PanoJSLG.prototype.assignTileImage = function(tile) {
       tile.element.style.top = tile.posy + 'px';
       tile.element.style.left = tile.posx + 'px';    
     }
+
     
 };
 

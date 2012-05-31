@@ -11,11 +11,11 @@
 
 *******************************************************************************/
 
-PanoJS.CONTROL_THUMBNAIL_SHOW_MINIMIZE = true;
-PanoJS.CONTROL_THUMBNAIL_STYLE = "position: absolute; z-index: 60; opacity:0.5; filter:alpha(opacity=50); ";
-PanoJS.CONTROL_IMAGE_PLUS      = "images/16px_plus.png";
-PanoJS.CONTROL_IMAGE_MINUS     = "images/16px_minus.png";
-PanoJS.CONTROL_IMAGE_PROGRESS  = "images/progress_128.gif";
+PanoJSLG.CONTROL_THUMBNAIL_SHOW_MINIMIZE = true;
+PanoJSLG.CONTROL_THUMBNAIL_STYLE = "position: absolute; z-index: 60; opacity:0.5; filter:alpha(opacity=50); ";
+PanoJSLG.CONTROL_IMAGE_PLUS      = "images/16px_plus.png";
+PanoJSLG.CONTROL_IMAGE_MINUS     = "images/16px_minus.png";
+PanoJSLG.CONTROL_IMAGE_PROGRESS  = "images/progress_128.gif";
 
 function trim(v, l, h) {
   if (v<l) return l;
@@ -47,11 +47,11 @@ function ThumbnailControl(viewer) {
 }
 
 ThumbnailControl.prototype.initControls = function() {
-  if (PanoJS.CONTROL_THUMBNAIL_UPDATED_URLS) return;
-  PanoJS.CONTROL_IMAGE_PLUS     = PanoJS.STATIC_BASE_URL + PanoJS.CONTROL_IMAGE_PLUS;
-  PanoJS.CONTROL_IMAGE_MINUS    = PanoJS.STATIC_BASE_URL + PanoJS.CONTROL_IMAGE_MINUS;
-  PanoJS.CONTROL_IMAGE_PROGRESS = PanoJS.STATIC_BASE_URL + PanoJS.CONTROL_IMAGE_PROGRESS;  
-  PanoJS.CONTROL_THUMBNAIL_UPDATED_URLS = true;
+  if (PanoJSLG.CONTROL_THUMBNAIL_UPDATED_URLS) return;
+  PanoJSLG.CONTROL_IMAGE_PLUS     = PanoJSLG.STATIC_BASE_URL + PanoJSLG.CONTROL_IMAGE_PLUS;
+  PanoJSLG.CONTROL_IMAGE_MINUS    = PanoJSLG.STATIC_BASE_URL + PanoJSLG.CONTROL_IMAGE_MINUS;
+  PanoJSLG.CONTROL_IMAGE_PROGRESS = PanoJSLG.STATIC_BASE_URL + PanoJSLG.CONTROL_IMAGE_PROGRESS;  
+  PanoJSLG.CONTROL_THUMBNAIL_UPDATED_URLS = true;
 }
 
 ThumbnailControl.prototype.update = function() {
@@ -68,10 +68,10 @@ ThumbnailControl.prototype.init = function() {
   // the thumbnail image may be larger that the space allocated for the thumbnail view
   // resize control accordingly to the larger side
   if (this.dom_image.width >= this.dom_image.height) {
-    this.dom_image.width = PanoJS.CONTROL_THUMBNAIL_SIZE;
+    this.dom_image.width = PanoJSLG.CONTROL_THUMBNAIL_SIZE;
     this.dom_element.style.height = this.dom_image.height+'px';
   } else { // if (this.dom_image.width < this.dom_image.height)
-    this.dom_image.height = PanoJS.CONTROL_THUMBNAIL_SIZE;    
+    this.dom_image.height = PanoJSLG.CONTROL_THUMBNAIL_SIZE;    
     this.dom_element.style.width = this.dom_image.width+'px';    
   }
   
@@ -92,8 +92,8 @@ ThumbnailControl.prototype.createDOMElements = function() {
     this.dom_element = document.createElement('div');
     this.dom_element.className = 'thumbnail';
     de.appendChild(this.dom_element); 
-    PanoJS.CONTROL_THUMBNAIL_SIZE = Math.max(this.dom_element.clientWidth, this.dom_element.clientHeight);
-    PanoJS.CONTROL_THUMBNAIL_BORDER = (this.dom_element.offsetWidth - this.dom_element.clientWidth) / 2;
+    PanoJSLG.CONTROL_THUMBNAIL_SIZE = Math.max(this.dom_element.clientWidth, this.dom_element.clientHeight);
+    PanoJSLG.CONTROL_THUMBNAIL_BORDER = (this.dom_element.offsetWidth - this.dom_element.clientWidth) / 2;
       
     this.dom_surface = document.createElement('div');
     this.dom_surface.className = 'thumbnail_surface';
@@ -115,7 +115,7 @@ ThumbnailControl.prototype.createDOMElements = function() {
     this.dom_element.appendChild(this.dom_image_progress); 
     this.dom_image_progress.width = '128';
     this.dom_image_progress.height = '128';    
-    this.dom_image_progress.src = PanoJS.CONTROL_IMAGE_PROGRESS;
+    this.dom_image_progress.src = PanoJSLG.CONTROL_IMAGE_PROGRESS;
     
     this.dom_image = document.createElement('img');
     this.dom_element.appendChild(this.dom_image); 
@@ -125,15 +125,15 @@ ThumbnailControl.prototype.createDOMElements = function() {
     this.dom_surface.onmousemove = callback (this, this.onmousemove );
     this.dom_surface.onmouseout  = callback (this, this.onmouseout ); 
     
-    if (PanoJS.CONTROL_THUMBNAIL_SHOW_MINIMIZE) {
-        var style = PanoJS.CONTROL_THUMBNAIL_STYLE + " bottom: 16px; right: 1px; width: 16px;"
+    if (PanoJSLG.CONTROL_THUMBNAIL_SHOW_MINIMIZE) {
+        var style = PanoJSLG.CONTROL_THUMBNAIL_STYLE + " bottom: 16px; right: 1px; width: 16px;"
         this.btn = document.createElement('span');
         this.dom_element.appendChild(this.btn);
         this.btn.setAttribute("style", style);
         this.btn.style.cssText = style;   
         
         this.img = document.createElement('img');
-        this.img.src = PanoJS.CONTROL_IMAGE_MINUS;
+        this.img.src = PanoJSLG.CONTROL_IMAGE_MINUS;
         if (this.btn.style.width) this.img.style.width = this.btn.style.width;
         this.btn.appendChild(this.img);    
         
@@ -146,7 +146,7 @@ ThumbnailControl.prototype.toggleMinimize = function(e) {
     this.minimized = !this.minimized;
 
     if (this.minimized) {
-        this.img.src = PanoJS.CONTROL_IMAGE_PLUS;
+        this.img.src = PanoJSLG.CONTROL_IMAGE_PLUS;
         this.dom_element.style.width = '17px';
         this.dom_element.style.height = '17px'; 
 
@@ -157,7 +157,7 @@ ThumbnailControl.prototype.toggleMinimize = function(e) {
         this.dom_image.style.display    = 'none';
         
     } else {
-        this.img.src = PanoJS.CONTROL_IMAGE_MINUS;
+        this.img.src = PanoJSLG.CONTROL_IMAGE_MINUS;
         this.dom_element.style.width = this.dom_width;
         this.dom_element.style.height = this.dom_height;
         
@@ -182,13 +182,13 @@ ThumbnailControl.prototype.viewerMoved = function(e) {
 
     this.dom_roi.style.left = tx + 'px';
     this.dom_roi.style.top  = ty + 'px';   
-    this.dom_roi.style.width = Math.min(w*this.thumbscale-2, this.tw-tx-PanoJS.CONTROL_THUMBNAIL_BORDER) + 'px';
-    this.dom_roi.style.height = Math.min(h*this.thumbscale-2, this.th-ty-PanoJS.CONTROL_THUMBNAIL_BORDER) + 'px';
+    this.dom_roi.style.width = Math.min(w*this.thumbscale-2, this.tw-tx-PanoJSLG.CONTROL_THUMBNAIL_BORDER) + 'px';
+    this.dom_roi.style.height = Math.min(h*this.thumbscale-2, this.th-ty-PanoJSLG.CONTROL_THUMBNAIL_BORDER) + 'px';
     
     this.dom_roi_prev.style.left = tx + 'px';
     this.dom_roi_prev.style.top  = ty + 'px';   
-    this.dom_roi_prev.style.width = Math.min(w*this.thumbscale-2, this.tw-tx-PanoJS.CONTROL_THUMBNAIL_BORDER) + 'px';
-    this.dom_roi_prev.style.height = Math.min(h*this.thumbscale-2, this.th-ty-PanoJS.CONTROL_THUMBNAIL_BORDER) + 'px';    
+    this.dom_roi_prev.style.width = Math.min(w*this.thumbscale-2, this.tw-tx-PanoJSLG.CONTROL_THUMBNAIL_BORDER) + 'px';
+    this.dom_roi_prev.style.height = Math.min(h*this.thumbscale-2, this.th-ty-PanoJSLG.CONTROL_THUMBNAIL_BORDER) + 'px';    
 }
 
 ThumbnailControl.prototype.viewerZoomed = function(e) {
@@ -213,9 +213,9 @@ ThumbnailControl.prototype.moveViewer = function (e) {
     var y = (my / this.thumbscale);   
     
     this.viewer.resetSlideMotion();
-    PanoJS.USE_SLIDE = false;
+    PanoJSLG.USE_SLIDE = false;
     this.viewer.recenter( this.viewer.toViewerFromImage({'x': x, 'y': y}), true, true );
-    PanoJS.USE_SLIDE = true;    
+    PanoJSLG.USE_SLIDE = true;    
 }
 
 ThumbnailControl.prototype.movePreview = function (e) {
